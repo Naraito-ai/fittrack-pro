@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+  body { min-height: 100dvh; overscroll-behavior: none; }
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: #13161e; }
+  ::-webkit-scrollbar-thumb { background: #323a4e; border-radius: 2px; }
+  ::selection { background: rgba(245,158,11,0.25); color: #fcd34d; }
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+  input[type="number"] { -moz-appearance: textfield; }
+  @media (max-width: 768px) {
+    input, select, textarea { font-size: 16px !important; }
+  }
+}
+
+@layer components {
+  .card        { @apply bg-forge-800 border border-forge-700 rounded-xl shadow-forge; }
+  .card-sm     { @apply bg-forge-800 border border-forge-700 rounded-lg shadow-forge; }
+  .input       { @apply w-full bg-forge-750 border border-forge-600 text-forge-300 rounded-lg px-3 py-2.5 text-sm font-body placeholder-forge-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500/30 transition-colors duration-150; }
+  .input-label { @apply block text-xs font-display font-semibold tracking-widest uppercase text-forge-400 mb-1.5; }
+  .btn         { @apply inline-flex items-center justify-center gap-2 font-display font-semibold tracking-wide text-sm rounded-lg px-4 py-2.5 transition-all duration-150 focus:outline-none disabled:opacity-40 disabled:cursor-not-allowed; }
+  .btn-primary   { @apply btn bg-amber-500 text-forge-950 hover:bg-amber-400 shadow-amber-glow; }
+  .btn-secondary { @apply btn bg-forge-700 text-forge-300 hover:bg-forge-600 border border-forge-600; }
+  .btn-danger    { @apply btn bg-crimson-600 text-white hover:bg-crimson-500; }
+  .btn-ghost     { @apply btn text-forge-400 hover:text-forge-300 hover:bg-forge-750; }
+  .section-title { @apply block text-xs font-display font-semibold tracking-widest uppercase text-forge-400; }
+  .badge       { @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-mono font-medium uppercase tracking-wider; }
+  .page-wrap   { @apply max-w-4xl mx-auto px-4 py-6 space-y-6 animate-fade-in; }
+  .empty-state { @apply flex flex-col items-center justify-center gap-3 py-16 text-forge-500 text-center; }
+  .form-group  { @apply flex flex-col gap-1.5; }
+}
+
+@layer utilities {
+  .stagger > *:nth-child(1) { animation-delay:   0ms; }
+  .stagger > *:nth-child(2) { animation-delay:  60ms; }
+  .stagger > *:nth-child(3) { animation-delay: 120ms; }
+  .stagger > *:nth-child(4) { animation-delay: 180ms; }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-100%); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-slide-down { animation: slideDown 0.3s cubic-bezier(0.16,1,0.3,1); }
+
+@supports (padding: max(0px)) {
+  .bottom-nav { padding-bottom: env(safe-area-inset-bottom); }
+}
