@@ -1,11 +1,12 @@
-import axios from 'axios';
+import axios from "axios";
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '/api',
-  headers: { 'Content-Type': 'application/json' },
+  baseURL: import.meta.env.VITE_API_URL || "https://fittrack-pro-api.onrender.com/api",
+  headers: {
+    "Content-Type": "application/json",
+  },
   timeout: 15000,
 });
-
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('fittrack_token');
   if (token) config.headers.Authorization = `Bearer ${token}`;
