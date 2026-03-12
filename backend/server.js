@@ -15,15 +15,26 @@ const app = express();
 app.use(helmet());
 const allowedOrigins = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(',')
-  : ['http://localhost:5173'];
+  : [
+      'http://localhost:5173',
+      'https://fittrack-pro-kohl.vercel.app',
+      'https://localhost'
+    ];
+
 app.use(cors({
-  origin: (origin, cb) => {
-    if (!origin) return cb(null, true);
-    if (allowedOrigins.includes(origin)) return cb(null, true);
-    cb(new Error('CORS: origin not allowed'));
+  origin: function(origin, callback) {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(null, false);
   },
   credentials: true,
+  methods: ['GET','POST','PUT','DELETE','OPTIONS'],
+  allowedHeaders: ['Content-Type','Authorization']
 }));
+
+app.options('*', cors());
 app.use(rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 300,
