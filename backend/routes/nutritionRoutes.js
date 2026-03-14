@@ -13,22 +13,20 @@ const {
 
 const router = express.Router();
 
+/* Protect all nutrition routes */
 router.use(protect);
 
-/* -------- FOOD LOG ROUTES -------- */
-
+/* Food logs */
 router.get('/logs', getLogs);
 router.post('/logs', createLog);
 router.put('/logs/:id', updateLog);
 router.delete('/logs/:id', deleteLog);
 
-/* -------- SUMMARY ROUTES -------- */
-
+/* Nutrition summaries */
 router.get('/summary', getDailySummary);
 router.get('/weekly', getWeeklyTrend);
 
-/* -------- AI FOOD ANALYZER -------- */
-
+/* AI FOOD ANALYZER */
 router.post('/ai-food', aiFood);
 
 module.exports = router;
