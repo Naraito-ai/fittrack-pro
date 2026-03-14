@@ -270,24 +270,24 @@ exports.getWeeklyTrend = async (req, res, next) => {
 
 /* ---------- AI FOOD ANALYZER ---------- */
 
-exports.aiFood = async (req, res, next) => {
+exports.aiFood = async (req, res) => {
   try {
 
-    const { query } = req.body;
+    const { text } = req.body;
 
-    if (!query)
+    if (!text) {
       return res.status(400).json({
-        success: false,
-        message: "Food query required"
+        success:false,
+        message:"Food text required"
       });
+    }
 
     const response = await axios.get(
-      "https://api.edamam.com/api/nutrition-data",
+      "https://api.spoonacular.com/recipes/guessNutrition",
       {
         params: {
-          ingr: query,
-          app_id: process.env.EDAMAM_APP_ID,
-          app_key: process.env.EDAMAM_APP_KEY
+          title: text,
+          apiKey: process.env.SPOONACULAR_API_KEY
         }
       }
     );
@@ -295,19 +295,22 @@ exports.aiFood = async (req, res, next) => {
     const data = response.data;
 
     res.json({
-      calories: Math.round(data.calories || 0),
-      protein: Math.round(data.totalNutrients.PROCNT?.quantity || 0),
-      fats: Math.round(data.totalNutrients.FAT?.quantity || 0),
-      carbs: Math.round(data.totalNutrients.CHOCDF?.quantity || 0)
+      success:true,
+      data:{
+        calories: Math.round(data.calories.value),
+        protein: Math.round(data.protein.value),
+        fats: Math.round(data.fat.value),
+        carbs: Math.round(data.carbs.value)
+      }
     });
 
   } catch (err) {
 
-    console.error("AI FOOD ERROR:", err.message);
+    console.log("AI FOOD ERROR:", err.message);
 
     res.status(500).json({
-      success: false,
-      message: "AI analysis failed"
+      success:false,
+      message:"AI failed to analyze food"
     });
 
   }
